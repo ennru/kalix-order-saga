@@ -8,9 +8,9 @@ import com.example.domain.OrderEvent;
 import com.example.domain.OrderEvent.OrderConfirmed;
 import com.example.domain.OrderEvent.OrderPlaced;
 import com.example.domain.OrderEvent.OrderRejected;
-import kalix.javasdk.annotations.EntityKey;
-import kalix.javasdk.annotations.EntityType;
 import kalix.javasdk.annotations.EventHandler;
+import kalix.javasdk.annotations.Id;
+import kalix.javasdk.annotations.TypeId;
 import kalix.javasdk.eventsourcedentity.EventSourcedEntity;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Profile("choreography")
-@EntityKey("id")
-@EntityType("order")
+@Id("id")
+@TypeId("order")
 @RequestMapping("/order/{id}")
 public class OrderEntity extends EventSourcedEntity<Order, OrderEvent> {
 

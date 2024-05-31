@@ -12,7 +12,6 @@ import kalix.javasdk.annotations.Id;
 import kalix.javasdk.annotations.TypeId;
 import kalix.javasdk.client.ComponentClient;
 import kalix.javasdk.workflow.Workflow;
-import kalix.javasdk.workflow.Workflow.Effect.TransitionalEffect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -71,7 +70,7 @@ public class OrderWorkflow extends Workflow<Order> {
       .params(reserveStocksCommand);
   }
 
-  private TransitionalEffect<Void> moveToPaymentOrReject(Response response) {
+  private Effect.TransitionalEffect<Void> moveToPaymentOrReject(Response response) {
     return switch (response) {
       case Failure __ -> {
         logger.info("stock reservation failed");
@@ -90,7 +89,7 @@ public class OrderWorkflow extends Workflow<Order> {
       .params(makePayment);
   }
 
-  private TransitionalEffect<Void> confirmOrderOrRollback(Response response) {
+  private Effect.TransitionalEffect<Void> confirmOrderOrRollback(Response response) {
     return switch (response) {
       case Failure __ -> {
         logger.info("payment failed");
@@ -114,7 +113,7 @@ public class OrderWorkflow extends Workflow<Order> {
       .params(order.id());
   }
 
-  private TransitionalEffect<Void> rejectOrder(Success success) {
+  private Effect.TransitionalEffect<Void> rejectOrder(Success success) {
     logger.info("reservation cancellation succeeded");
     return effects().updateState(currentState().asRejected()).end();
   }
